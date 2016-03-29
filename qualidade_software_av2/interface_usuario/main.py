@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from classes.caixa_eletronico import CaixaEletronico
-from classes.nota import Nota
+from qualidade_software_av2.classes import CaixaEletronico, Nota
 
 OPCOES_MENU = {
     1: 'repor',
