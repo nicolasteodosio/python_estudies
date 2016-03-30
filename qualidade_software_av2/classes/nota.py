@@ -2,13 +2,16 @@
 
 
 class Nota(object):
+    quantidade = 0
 
-    def __init__(self, valor, quantidade):
+    def __init__(self, valor):
         self.valor = valor
-        self.quantidade = quantidade
 
-    def multiplica_valor_quantidade(self):
-        return self.valor * self.quantidade
+    def adicionar(self, quantidade):
+        self.quantidade += quantidade
 
-    # def get_quantidade_nota(self, valor):
-    #     return self
+    def remover(self, quantidade):
+        self.quantidade -= quantidade
+
+    def calcular_total(self):
+        return self.quantidade * self.valor

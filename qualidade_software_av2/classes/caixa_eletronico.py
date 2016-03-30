@@ -1,18 +1,37 @@
 # -*- coding: utf-8 -*-
+from saldo import Saldo
 
 
 class CaixaEletronico(object):
+    saldo = Saldo()
+    qtdsaques = 0
+    valor_total_saques = 0
 
-    def __init__(self, saldo, qtdsaques):
-        self.saldo = saldo
-        self.qtdsaques = qtdsaques
+    def retorna_valor_total_saques(self):
+        return self.valor_total_saques
 
-    def sacar(self, valor):
-        self.qtdsaques += 1
-        self.saldo -= valor
+    def depositar(self, relacao_notas):
+        self.saldo.adiciona_notas(relacao_notas)
 
-    def add_saldo(self, notas):
-        for nota in notas:
-            valor = nota.multiplica_valor_quantidade()
-            self.saldo += valor
+    def sacar(self, valor_saque):
+        valor_original = valor_saque
+        if valor_saque > self.saldo.retorna_saldo():
+            return u"\nQuantia inválida ou saldo insuficiente"
+
+        for nota in self.saldo.retorna_notas():
+            if not valor_saque >= nota.valor:
+                continue
+
+            quantidade_notas = valor_saque / nota.valor
+            quantidade_notas_no_caixa = nota.quantidade
+
+            if quantidade_notas_no_caixa < quantidade_notas:
+                quantidade_notas = quantidade_notas_no_caixa
+
+            valor_saque -= quantidade_notas * nota.valor
+            nota.remover(quantidade_notas)
+
+        if valor_original != valor_saque:
+            self.qtdsaques += 1
+            self.valor_total_saques += valor_original
 
