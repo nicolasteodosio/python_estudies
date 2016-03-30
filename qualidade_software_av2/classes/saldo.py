@@ -10,22 +10,19 @@ class Saldo(object):
     def retorna_saldo_notas(self):
         return sum([nota.calcular_total() for nota in self.notas])
 
-    def retorna_nota_pelo_valor(self, valor):
-        return list(filter(lambda x: x.valor == valor, self.notas))[0]
-
     def retorna_quantidade_pelo_valor(self, valor):
         nota = self.retorna_nota_pelo_valor(valor)
         return nota.quantidade
 
-    def retorna_notas(self):
-        return self.notas
+    def retorna_nota_pelo_valor(self, valor):
+        return list(filter(lambda x: x.valor == valor, self.notas))[0]
 
-    def adicionar_notas(self, relacao_notas):
-        for valor, quantidade in relacao_notas.items():
-            nota = self.retorna_nota_pelo_valor(valor)
-            nota.adicionar(quantidade)
-
-    def remover_notas(self, relacao_notas):
-        for valor, quantidade in relacao_notas.items():
+    def remover_notas(self, notas_valor_qtd):
+        for valor, quantidade in notas_valor_qtd.items():
             nota = self.retorna_nota_pelo_valor(valor)
             nota.remover(quantidade)
+
+    def adicionar_notas(self, notas_valor_qtd):
+        for valor, quantidade in notas_valor_qtd.items():
+            nota = self.retorna_nota_pelo_valor(valor)
+            nota.adicionar(quantidade)
