@@ -15,10 +15,12 @@ class CaixaEletronico(object):
 
     def sacar(self, valor_saque):
         valor_original = valor_saque
+        msg = 'Saque realizado com sucesso'
         if valor_saque > self.saldo.retorna_saldo():
-            return u"\nQuantia inválida ou saldo insuficiente"
+            msg = u"\nQuantia inválida ou saldo insuficiente"
 
         for nota in self.saldo.retorna_notas():
+
             if not valor_saque >= nota.valor:
                 continue
 
@@ -27,6 +29,7 @@ class CaixaEletronico(object):
 
             if quantidade_notas_no_caixa < quantidade_notas:
                 quantidade_notas = quantidade_notas_no_caixa
+                msg = u"\nNão há cédulas para efetuar o saque, por favor reponha"
 
             valor_saque -= quantidade_notas * nota.valor
             nota.remover(quantidade_notas)
@@ -34,4 +37,5 @@ class CaixaEletronico(object):
         if valor_original != valor_saque:
             self.qtdsaques += 1
             self.valor_total_saques += valor_original
+        return msg
 

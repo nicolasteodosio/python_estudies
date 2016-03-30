@@ -44,9 +44,6 @@ def efetuar_saque(caixa):
     mostrar_cabecalho(msg=u"Caixa Eletrônico - Saque")
     quantia = input("Quantia: ")
     print caixa.sacar(quantia)
-    # if True:
-    #     print u'Quantidade de saques: {} \n' \
-    #           u'Novo valor após o saque: {}'.format(caixa.qtdsaques, caixa.saldo.retorna_saldo())
 
 
 def repor_caixa(caixa):
