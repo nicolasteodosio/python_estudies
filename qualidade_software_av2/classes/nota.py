@@ -9,3 +9,6 @@ class Nota(object):
 
     def multiplica_valor_quantidade(self):
         return self.valor * self.quantidade
+
+    # def get_quantidade_nota(self, valor):
+    #     return self

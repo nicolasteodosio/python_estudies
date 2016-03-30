@@ -8,64 +8,109 @@ OPCOES_MENU = {
     4: 'sair',
 }
 
+NOTA5_VALOR = 5
+NOTA10_VALOR = 10
+NOTA20_VALOR = 20
+NOTA50_VALOR = 50
+NOTA100_VALOR = 100
+
+NOTA5 = Nota(NOTA5_VALOR, 0)
+NOTA10 = Nota(NOTA10_VALOR, 0)
+NOTA20 = Nota(NOTA20_VALOR, 0)
+NOTA50 = Nota(NOTA50_VALOR, 0)
+NOTA100 = Nota(NOTA100_VALOR, 0)
+
+
+NOTAS = []
 
 def main():
     while True:
         opcao = mostrar_menu()
 
-        if OPCOES_MENU[opcao] == 'repor':
-            caixa = repor_caixa()
+        try:
+            if OPCOES_MENU[opcao] == 'repor':
+                caixa = repor_caixa()
 
-        elif OPCOES_MENU[opcao] == 'sacar':
-            efetuar_saque(caixa)
+            elif OPCOES_MENU[opcao] == 'sacar':
+                efetuar_saque(caixa)
 
-        elif OPCOES_MENU[opcao] == 'consultar_saldo':
-            print 'Saldo atual: {}'.format(caixa.saldo)
+            elif OPCOES_MENU[opcao] == 'consultar_saldo':
+                print '\n Saldo atual: {}'.format(caixa.saldo)
 
-        elif OPCOES_MENU[opcao] == 'sair':
-            break
+            elif OPCOES_MENU[opcao] == 'sair':
+                break
 
-        else:
-            print(u"Opção inválida!")
-            continue
+        except KeyError:
+            print(u'\n Opção inválida')
 
 
 def efetuar_saque(caixa):
-    print("\n---------------------------------------")
-    print(u"Caixa Eletrônico - Saque")
-    print("---------------------------------------")
+    mostrar_cabecalho(msg=u"Caixa Eletrônico - Saque")
     quantia = input("Quantia: ")
-    print caixa.sacar(quantia)
+    if quantia % 100 == 0:
+        NOTA100.quantidade -= 1
+        caixa.sacar(quantia)
+        quantia -= NOTA100_VALOR
+    elif quantia % 50 == 0:
+        NOTA50.quantidade -= 1
+        caixa.sacar(quantia)
+        quantia -= NOTA50_VALOR
+    elif quantia % 20 == 0:
+        NOTA20.quantidade -= 1
+        caixa.sacar(quantia)
+        quantia -= NOTA20_VALOR
+    elif quantia % 10 == 0:
+        NOTA10.quantidade -= 1
+        caixa.sacar(quantia)
+        quantia -= NOTA10_VALOR
+    elif quantia % 5 == 0:
+        NOTA5.quantidade -= 1
+        caixa.sacar(quantia)
+        quantia -= NOTA5_VALOR
+    if quantia == 0:
+        print u'Quantidade de saques: {} \n' \
+              u'Novo valor após o saque: {}'.format(caixa.qtdsaques, caixa.saldo)
+    else:
+        print u"\nQuantidade de células não é múltiplo do valor solicitado"
+
+
 
 
 def repor_caixa():
-    print("\n---------------------------------------")
-    print(u"Caixa Eletrônico - Reposição de notas")
-    print("---------------------------------------")
-    qtdNota5 = input("Informa quantidade de notas de 5 reais: ")
-    nota5 = Nota(5, qtdNota5)
-    qtdNota10 = input("Informa quantidade de notas de 10 reais: ")
-    nota10 = Nota(10, qtdNota10)
-    qtdNota20 = input("Informa quantidade de notas de 20 reais: ")
-    nota20 = Nota(20, qtdNota20)
-    qtdNota50 = input("Informa quantidade de notas de 50 reais: ")
-    nota50 = Nota(50, qtdNota50)
-    qtdNota100 = input("Informa quantidade de notas de 100 reais: ")
-    nota100 = Nota(100, qtdNota100)
-    notas = [nota5.multiplica_valor_quantidade(), nota10.multiplica_valor_quantidade(),
-             nota20.multiplica_valor_quantidade(), nota50.multiplica_valor_quantidade(),
-             nota100.multiplica_valor_quantidade()]
-    caixa = CaixaEletronico(sum(notas), 0)
+    
+    mostrar_cabecalho(msg=u"Caixa Eletrônico - Reposição de notas")
+
+    qtdnota5 = input("Informa quantidade de notas de 5 reais: ")
+    NOTA5.quantidade = qtdnota5
+    qtdnota10 = input("Informa quantidade de notas de 10 reais: ")
+    NOTA10.quantidade = qtdnota10
+    qtdnota20 = input("Informa quantidade de notas de 20 reais: ")
+    NOTA20.quantidade = qtdnota20
+    qtdnota50 = input("Informa quantidade de notas de 50 reais: ")
+    NOTA50.quantidade = qtdnota50
+    qtdnota100 = input("Informa quantidade de notas de 100 reais: ")
+    NOTA100.quantidade = qtdnota100
+
+    NOTAS = [NOTA5, NOTA10, NOTA20, NOTA50, NOTA100]
+    
+    caixa = CaixaEletronico(0, qtdsaques=0)
+
+    caixa.add_saldo(NOTAS)
+
     return caixa
 
 
 def mostrar_menu():
-    print("\n---------------------------------------")
-    print(u"Caixa Eletrônico - Menu de Opções")
-    print("---------------------------------------")
+    mostrar_cabecalho(msg=u"Caixa Eletrônico - Menu de Opções")
     print("1- Repor")
     print("2- Sacar")
     print("3- Consultar saldo")
     print("4- Fim")
     opcao = input("Opção: ")
     return opcao
+
+
+def mostrar_cabecalho(msg):
+    print("\n---------------------------------------")
+    print(msg)
+    print("---------------------------------------")

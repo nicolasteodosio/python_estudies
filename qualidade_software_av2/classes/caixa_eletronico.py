@@ -8,8 +8,11 @@ class CaixaEletronico(object):
         self.qtdsaques = qtdsaques
 
     def sacar(self, valor):
-        if valor > self.saldo:
-            return u'Não é possível retirar esse valor'
         self.qtdsaques += 1
-        return u'QUantidade de saques: {} \n' \
-               u'Novo valor após o saque: {}'.format(self.qtdsaques, self.saldo - valor)
+        self.saldo -= valor
+
+    def add_saldo(self, notas):
+        for nota in notas:
+            valor = nota.multiplica_valor_quantidade()
+            self.saldo += valor
+
