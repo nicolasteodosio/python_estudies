@@ -16,7 +16,6 @@ class Main(object):
         caixa = CaixaEletronico()
         while True:
             opcao = mostrar_menu()
-
             try:
                 if OPCOES_MENU[opcao] == 'repor':
                     caixa = repor_caixa(caixa)
@@ -35,7 +34,7 @@ class Main(object):
 
 
 def consultar_saldo(caixa):
-    print '\nSaldo atual: {}\n'.format(caixa.saldo.retorna_saldo())
+    print '\nSaldo atual: {}\n'.format(caixa.saldo.retorna_saldo_notas())
     for nota in VALORES_NOTAS:
         print 'Quantidade de notas de {}: {}'.format(nota, caixa.saldo.retorna_quantidade_pelo_valor(nota))
 
@@ -59,7 +58,7 @@ def repor_caixa(caixa):
     qtdnotas = [qtdnota100, qtdnota50, qtdnota20, qtdnota10, qtdnota5]
 
     nota_valor = {}
-    for indice, nota in enumerate(caixa.saldo.retorna_notas()):
+    for indice, nota in enumerate(caixa.saldo.notas):
         nota_valor[nota.valor] = qtdnotas[indice]
 
     caixa.depositar(nota_valor)
